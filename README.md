@@ -15,9 +15,7 @@ Here, you can search for cards and find all the original and revival cards.
 Take a look at the "Syntax" tab to find more information about how to use the
 search tool.
 
-### 🪄 Community website:
-
-[hptcgrevival](https://hptcgrevival.github.io/hptcgrevival/)
+### 🪄 Community website: [hptcgrevival](https://hptcgrevival.github.io/hptcgrevival/)
 
 This site has a lot of good resources, like the official game rules, banlist,
 event schedule, and decklists from past events.
