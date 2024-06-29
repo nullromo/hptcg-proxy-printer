@@ -23,15 +23,15 @@ created new expansion sets to keep the game alive.
 
 ## 🐦‍🔥 About HPTCG Proxy Printer
 
-#### 🧹 Instructions
+### 🧹 Instructions
 
 TODO: put instructions here
 
-#### ⚗️ Technical Details
+### ⚗️ Technical Details
 
 This is a React app built with `create-react-app`.
 
-##### NPM scripts
+#### NPM scripts
 
 -   `start`
     -   Starts the React dev server.
