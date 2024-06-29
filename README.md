@@ -29,7 +29,18 @@ TODO: put instructions here
 
 #### ⚗️ Technical Details
 
-TODO: put some explanation here
+This is a React app built with `create-react-app`.
+
+##### NPM scripts
+
+-   `start`
+    -   Starts the React dev server.
+-   `build`
+    -   Builds the React app.
+-   `deploy`
+    -   Deploys the app to GitHub Pages.
+-   `predeploy`
+    -   Automatically runs when the `deploy` script is run.
 
 ## 🧑‍🏫 License, Contributing, etc.
 
