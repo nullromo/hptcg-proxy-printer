@@ -1,9 +1,17 @@
 import axios from 'axios';
 import React from 'react';
 
+const cleanName = (name: string) => {
+    const noSpaces = name.replaceAll(/\s(?<letter>.)/g, (_, group1: string) => {
+        return group1.toUpperCase();
+    });
+    return noSpaces.charAt(0).toUpperCase() + noSpaces.slice(1);
+};
+
 const App = () => {
-    const [result, setResult] = React.useState('');
+    const [result, setResult] = React.useState<string | null>(null);
     const [name, setName] = React.useState('');
+    const [data, setData] = React.useState<string | null>(null);
 
     return (
         <div
@@ -23,23 +31,33 @@ const App = () => {
             <button
                 type='button'
                 onClick={() => {
-                    const form = new FormData();
-                    form.append('searchText', name);
-                    form.append('sortBy', 'sn');
-                    form.append('sortOrder', 'asc');
-
-                    // TODO: I need to get around the CORS issue, but I'm not sure how to do it.
-
-                    // TODO: I tried curl -v -F searchText=lesson -F sortBy=sn -F sortOrder=asc -X POST https://accio.cards/search?handler=SearchCards and I just got 400 Bad Request. Not sure what's different about this request vs. the browser's request
-
-                    axios
-                        .post(
-                            'https://accio.cards/search?handler=SearchCards',
-                            form,
-                            { headers: { 'Access-Control-Allow-Origin': '*' } },
-                        )
+                    const cleanedName = cleanName(name);
+                    const tries = [
+                        `${cleanedName}.png`,
+                        `${cleanedName}.jpg`,
+                        `${cleanedName}.jpeg`,
+                    ];
+                    Promise.any(
+                        tries.map(async (filename) => {
+                            return axios.get<Blob>(
+                                `https://accio.cards/cardimages/${filename}`,
+                                { responseType: 'blob' },
+                            );
+                        }),
+                    )
+                        .then(async (response) => {
+                            const reader = new window.FileReader();
+                            reader.readAsDataURL(response.data);
+                            return new Promise<string | null>((resolve) => {
+                                reader.onload = () => {
+                                    resolve(reader.result?.toString() ?? null);
+                                };
+                            });
+                        })
                         .then((result) => {
                             console.log(result);
+                            setResult(result);
+                            setData(result);
                         })
                         .catch(console.error);
                 }}
@@ -47,6 +65,7 @@ const App = () => {
                 Go
             </button>
             <div>{result}</div>
+            {data ? <img src={data} /> : null}
         </div>
     );
 };
