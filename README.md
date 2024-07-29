@@ -1,7 +1,7 @@
 # ⚡ HPTCG Proxy Printer
 
-Use [the deployed site](TODO) to print out proxy cards for the Harry Potter
-Trading Card Game.
+Use [the deployed site](https://nullromo.github.io/hptcg-proxy-printer/) to
+print out proxy cards for the Harry Potter Trading Card Game.
 
 ## 🧙 About the Game
 
@@ -25,7 +25,16 @@ created new expansion sets to keep the game alive.
 
 ### 🧹 Instructions
 
-TODO: put instructions here
+To use the site, simply type or paste in a list of cards you want to print. Then
+click the "Go!" button to preview the card images. Finally, click the "Download"
+button to download a PDF with all the card images.
+
+It is recommended to print the cards on plain white paper, then slide them into
+a card sleeve along with a normal card. The cards are 63mm x 88mm, which is a
+standard size for cards. Most card sleeves will fit this standard size. For the
+normal card, you can use HPTCG cards if you have them, but cards from other
+games like Magic, Netrunner, or YuGiOh will also work too. Standard playing
+cards should work as well.
 
 ### ⚗️ Technical Details
 
