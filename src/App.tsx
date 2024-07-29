@@ -1,71 +1,60 @@
-import axios from 'axios';
-import React from 'react';
-
-const cleanName = (name: string) => {
-    const noSpaces = name.replaceAll(/\s(?<letter>.)/g, (_, group1: string) => {
-        return group1.toUpperCase();
-    });
-    return noSpaces.charAt(0).toUpperCase() + noSpaces.slice(1);
-};
+import { CardEntry } from './cardEntry';
+import { Footer } from './footer';
+import { PDFPreview } from './pdfPreview';
 
 const App = () => {
-    const [result, setResult] = React.useState<string | null>(null);
-    const [name, setName] = React.useState('');
-    const [data, setData] = React.useState<string | null>(null);
-
     return (
         <div
             style={{
-                alignItems: 'flex-start',
+                alignItems: 'center',
                 display: 'flex',
                 flexDirection: 'column',
             }}
         >
-            <input
-                type='text'
-                value={name}
-                onChange={(event) => {
-                    setName(event.target.value);
-                }}
-            />
+            <h1>HPTCG Proxy Printer</h1>
+            <a href='https://harrypottertcg.com/'>What is HPTCG?</a>
+            <br />
+            <h2 style={{ marginBottom: 0 }}>Instructions</h2>
+            <div style={{ maxWidth: '600px' }}>
+                <ol>
+                    <li>
+                        {
+                            'Enter a list of cards you want to print in the box below. The cards can be listed with a quantity, like "4 Diagon Alley" or "12 Potions" for example. The capitalization does not matter, but the spelling does. If a card is not found, please double-check the spelling.'
+                        }
+                    </li>
+                    <br />
+                    <li>
+                        {
+                            'Click the "Go!" button to generate a ready-to-print PDF with the card images.'
+                        }
+                    </li>
+                    <br />
+                    <li>
+                        {
+                            'Click the "Download" button to download and print the PDF. You can then cut out the cards and insert them into standard card sleeves using other cards for stability.'
+                        }
+                    </li>
+                    <br />
+                    <li>
+                        {
+                            'Immerse yourself in the magic of the wizarding world!'
+                        }
+                    </li>
+                </ol>
+            </div>
+            <h2>Card Entry</h2>
+            <CardEntry />
+            <h2>PDF Preview</h2>
+            <PDFPreview />
             <button
                 type='button'
                 onClick={() => {
-                    const cleanedName = cleanName(name);
-                    const tries = [
-                        `${cleanedName}.png`,
-                        `${cleanedName}.jpg`,
-                        `${cleanedName}.jpeg`,
-                    ];
-                    Promise.any(
-                        tries.map(async (filename) => {
-                            return axios.get<Blob>(
-                                `https://accio.cards/cardimages/${filename}`,
-                                { responseType: 'blob' },
-                            );
-                        }),
-                    )
-                        .then(async (response) => {
-                            const reader = new window.FileReader();
-                            reader.readAsDataURL(response.data);
-                            return new Promise<string | null>((resolve) => {
-                                reader.onload = () => {
-                                    resolve(reader.result?.toString() ?? null);
-                                };
-                            });
-                        })
-                        .then((result) => {
-                            console.log(result);
-                            setResult(result);
-                            setData(result);
-                        })
-                        .catch(console.error);
+                    // TODO
                 }}
             >
-                Go
+                Download
             </button>
-            <div>{result}</div>
-            {data ? <img src={data} /> : null}
+            <Footer />
         </div>
     );
 };
