@@ -18,6 +18,13 @@ export const Footer = () => {
                 </a>
                 {''}.
             </p>
+            <p style={{ fontSize: '10px' }}>
+                The information presented on this site about Harry Potter,
+                including card images, characters, names and related indicia are
+                ™ and © Warner Bros. Entertainment Inc. This website is not
+                produced by, endorsed by, supported by, or affiliated with
+                Warner Bros. Entertainment Inc. All rights reserved.
+            </p>
         </div>
     );
 };

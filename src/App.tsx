@@ -54,6 +54,7 @@ const App = () => {
             >
                 Download
             </button>
+            <div style={{ height: '100px' }} />
             <Footer />
         </div>
     );
