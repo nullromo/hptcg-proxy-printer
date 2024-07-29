@@ -13,10 +13,10 @@ export enum PageSize {
 }
 
 export const makePDF = (
-    pageSize: PageSize,
+    options: { pageSize: PageSize; blackFill: boolean },
     cards: Partial<Record<string, Card>>,
 ) => {
-    const pdf = new jsPDF({ format: pageSize });
+    const pdf = new jsPDF({ format: options.pageSize });
 
     let cardNumber = 0;
     Object.values(cards).forEach((card) => {
@@ -26,6 +26,15 @@ export const makePDF = (
         for (let index = 0; index < card.count; index += 1) {
             const col = cardNumber % 3;
             const row = Math.floor(cardNumber / 3);
+            if (options.blackFill) {
+                pdf.rect(
+                    BUFFER + col * CARD_WIDTH,
+                    BUFFER + row * CARD_HEIGHT,
+                    CARD_WIDTH,
+                    CARD_HEIGHT,
+                    'F',
+                );
+            }
             pdf.addImage(
                 card.image,
                 'png',

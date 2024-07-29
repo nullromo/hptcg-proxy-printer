@@ -5,8 +5,8 @@ import type { Card } from './App';
 export const PDFGenerator = (props: {
     readonly cards: Partial<Record<string, Card>>;
 }) => {
-    // page size for generated PDF
     const [pageSize, setPageSize] = React.useState(PageSize.LETTER);
+    const [blackFill, setBlackFill] = React.useState(true);
 
     return (
         <div>
@@ -22,10 +22,22 @@ export const PDFGenerator = (props: {
                     <option value={PageSize.A4}>A4</option>
                 </select>
             </div>
+            <div>
+                <label>
+                    {'Black fill: '}
+                    <input
+                        checked={blackFill}
+                        type='checkbox'
+                        onChange={(event) => {
+                            setBlackFill(event.target.checked);
+                        }}
+                    />
+                </label>
+            </div>
             <button
                 type='button'
                 onClick={() => {
-                    makePDF(pageSize, props.cards);
+                    makePDF({ blackFill, pageSize }, props.cards);
                 }}
             >
                 Download PDF
