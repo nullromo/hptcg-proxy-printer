@@ -1,5 +1,6 @@
 import React from 'react';
 import { fetchCard } from './fetchCard';
+import { makePDF, PageSize } from './makePDF';
 
 const parseCards = (
     input: string,
@@ -29,6 +30,9 @@ export const CardEntry = () => {
         {},
     );
 
+    // page size for generated PDF
+    const [pageSize, setPageSize] = React.useState(PageSize.LETTER);
+
     return (
         <div
             style={{
@@ -45,6 +49,18 @@ export const CardEntry = () => {
                 }}
             />
             <br />
+            <div style={{ marginBottom: '4px' }}>
+                {'Page Size: '}
+                <select
+                    value={pageSize}
+                    onChange={(event) => {
+                        setPageSize(event.target.value as PageSize);
+                    }}
+                >
+                    <option value={PageSize.LETTER}>Letter</option>
+                    <option value={PageSize.A4}>A4</option>
+                </select>
+            </div>
             <button
                 type='button'
                 onClick={() => {
@@ -63,13 +79,11 @@ export const CardEntry = () => {
                                 .catch(console.error);
                         }
                     });
+                    makePDF(pageSize, images['diagon alley'] ?? '');
                 }}
             >
                 Go!
             </button>
-            {Object.values(images).map((image) => {
-                return image ? <img key={image} src={image} /> : null;
-            })}
         </div>
     );
 };
