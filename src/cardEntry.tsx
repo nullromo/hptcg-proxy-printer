@@ -1,6 +1,8 @@
 import React from 'react';
 import { fetchCard } from './fetchCard';
-import { makePDF, PageSize } from './makePDF';
+import { PageSize } from './makePDF';
+import type { ReactSetter } from './util';
+import type { Card } from './App';
 
 const parseCards = (
     input: string,
@@ -21,17 +23,11 @@ const parseCards = (
         });
 };
 
-export const CardEntry = () => {
+export const CardEntry = (props: {
+    readonly setCards: ReactSetter<Partial<Record<string, Card>>>;
+}) => {
     // the input entered by the user
     const [textInput, setTextInput] = React.useState('');
-
-    // a map from card name to card image data
-    const [images, setImages] = React.useState<Partial<Record<string, string>>>(
-        {},
-    );
-
-    // page size for generated PDF
-    const [pageSize, setPageSize] = React.useState(PageSize.LETTER);
 
     return (
         <div
@@ -42,6 +38,11 @@ export const CardEntry = () => {
             }}
         >
             <textarea
+                placeholder={`2 Diagon Alley
+Vermillious
+
+1 draco malfoy
+10 Potions`}
                 style={{ height: '200px', resize: 'none', width: '300px' }}
                 value={textInput}
                 onChange={(event) => {
@@ -49,37 +50,31 @@ export const CardEntry = () => {
                 }}
             />
             <br />
-            <div style={{ marginBottom: '4px' }}>
-                {'Page Size: '}
-                <select
-                    value={pageSize}
-                    onChange={(event) => {
-                        setPageSize(event.target.value as PageSize);
-                    }}
-                >
-                    <option value={PageSize.LETTER}>Letter</option>
-                    <option value={PageSize.A4}>A4</option>
-                </select>
-            </div>
             <button
                 type='button'
                 onClick={() => {
+                    const data: Partial<Record<string, Card>> = {};
                     parseCards(textInput).forEach((card) => {
                         console.log(card);
                         if (card) {
                             fetchCard(card.name)
                                 .then((result) => {
-                                    setImages((data) => {
-                                        if (result) {
-                                            data[card.name] = result;
-                                        }
-                                        return data;
-                                    });
+                                    console.log('data is', data);
+                                    if (result) {
+                                        data[card.name] = {
+                                            count: card.count,
+                                            image: result,
+                                        };
+                                    }
+                                    console.log('setting data to', data);
+                                    return data;
                                 })
-                                .catch(console.error);
+                                .catch(console.error)
+                                .finally(() => {
+                                    props.setCards(data);
+                                });
                         }
                     });
-                    makePDF(pageSize, images['diagon alley'] ?? '');
                 }}
             >
                 Go!

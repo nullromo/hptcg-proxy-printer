@@ -1,8 +1,19 @@
+import React from 'react';
 import { CardEntry } from './cardEntry';
 import { Footer } from './footer';
-import { PDFPreview } from './pdfPreview';
+import { Preview } from './pdfPreview';
+import { PDFGenerator } from './pdfGenerator';
+import { Instructions } from './instructions';
+
+export type Card = {
+    count: number;
+    image: string;
+};
 
 const App = () => {
+    // a map from card name to card data
+    const [cards, setCards] = React.useState<Partial<Record<string, Card>>>({});
+
     return (
         <div
             style={{
@@ -15,45 +26,21 @@ const App = () => {
             <a href='https://harrypottertcg.com/'>What is HPTCG?</a>
             <br />
             <h2 style={{ marginBottom: 0 }}>Instructions</h2>
-            <div style={{ maxWidth: '600px' }}>
-                <ol>
-                    <li>
-                        {
-                            'Enter a list of cards you want to print in the box below. The cards can be listed with a quantity, like "4 Diagon Alley" or "12 Potions" for example. The capitalization does not matter, but the spelling does. If a card is not found, please double-check the spelling.'
-                        }
-                    </li>
-                    <br />
-                    <li>
-                        {
-                            'Click the "Go!" button to generate a ready-to-print PDF with the card images.'
-                        }
-                    </li>
-                    <br />
-                    <li>
-                        {
-                            'Click the "Download" button to download and print the PDF. You can then cut out the cards and insert them into standard card sleeves using other cards for stability.'
-                        }
-                    </li>
-                    <br />
-                    <li>
-                        {
-                            'Immerse yourself in the magic of the wizarding world!'
-                        }
-                    </li>
-                </ol>
-            </div>
+            <Instructions />
             <h2>Card Entry</h2>
-            <CardEntry />
-            <h2>PDF Preview</h2>
-            <PDFPreview />
-            <button
-                type='button'
-                onClick={() => {
-                    // TODO
+            <CardEntry
+                setCards={(value) => {
+                    if (typeof value === 'function') {
+                        setCards({ ...value(cards) });
+                    } else {
+                        setCards({ ...value });
+                    }
                 }}
-            >
-                Download
-            </button>
+            />
+            <h2>Preview</h2>
+            <Preview cards={cards} />
+            <h2>Generate PDF</h2>
+            <PDFGenerator cards={cards} />
             <div style={{ height: '100px' }} />
             <Footer />
         </div>
