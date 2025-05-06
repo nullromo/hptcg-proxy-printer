@@ -51,6 +51,12 @@ This is a React app built with `create-react-app`.
 -   `predeploy`
     -   Automatically runs when the `deploy` script is run.
 
+## 💥 Known Issues
+
+There is one card (Werewolf) that won't seem to rotate properly. See [issue #3](https://github.com/nullromo/hptcg-proxy-printer/issues/3).
+For now there is [a pdf](https://github.com/nullromo/hptcg-proxy-printer/blob/main/Werewolf.pdf)
+that you can use instead.
+
 ## 🧑‍🏫 License, Contributing, etc.
 
 See [LICENSE](./LICENSE) and [CONTRIBUTING.md](./CONTRIBUTING.md).
