@@ -15,15 +15,22 @@ const cleanName = (name: string) => {
 
 export const fetchCard = async (name: string) => {
     const cleanedName = cleanName(name);
-    const tries = [
+    const filenames = [
         `${cleanedName}.png`,
         `${cleanedName}.jpg`,
         `${cleanedName}.jpeg`,
     ];
+    const folders = ['cardimages', 'cardimages2', 'cardimages3'];
+    const tries = filenames.flatMap((filename) => {
+        return folders.map((folder) => {
+            return { filename, folder };
+        });
+    });
+    console.log(tries);
     return Promise.any(
-        tries.map(async (filename) => {
+        tries.map(async ({ filename, folder }) => {
             return axios.get<Blob>(
-                `https://accio.cards/cardimages/${filename}`,
+                `https://accio.cards/${folder}/${filename}`,
                 { responseType: 'blob' },
             );
         }),
